@@ -1,0 +1,71 @@
+<div id="popup" style="display: none;"> 
+   <?php echo $this->getChildHtml('popup-content') ?> 
+
+
+
+<?php
+
+$blockObj= $block->getLayout()->createBlock('Ambab\EMI\Block\Catalog\Product\View');
+$bank = $blockObj->getBank();
+$Price = $blockObj->getOrdertotal();
+$Enable = $blockObj->isEnable();
+
+?>
+
+
+
+
+<div id="element" class="collapsibleContainer" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": false, "multipleCollapsible": false}}'>
+    <?php foreach ($bank as $emi): ?>
+
+      <div class="collapsibleTab" data-role="collapsible">
+         <div data-role="trigger">
+                  <span><?php echo $emi['bank_name']; ?></span>     
+         </div>         
+      </div>
+
+    <div class="collapsibleContent" data-role="content">
+        <table id="emi" class="table">
+        <thead>
+            <tr>
+                <th>Plans</th>
+                <th>Interest(PA)</th> 
+                <th>Final_Amount</th>
+                <th>Select</th>
+            </tr>
+        </thead>
+    <tbody>
+        <?php foreach ($blockObj->getEMI_Detail($emi['bank_name'])->getData() as $emi): ?>
+
+            <?php $emiprice = $blockObj->getEMI($Price, $emi['interest_rate'], $emi['emi_plan']); ?>
+            <?php $total = $emiprice *$emi['emi_plan']; ?>
+            <?php $plan = round($total/$emi['emi_plan'],2);?>
+            <?php $interest = $total - $Price ;?>
+            <tr>
+                 <td><?php 
+                 echo $plan ."$ x ". $emi['emi_plan'] ."m" ?> </td>
+                 <td><?php 
+                 echo round($interest,2) ."$"." (".$emi['interest_rate']."%".")"?></td> 
+                 <td><?php 
+                 echo round($total, 2) ."$" ?></td>
+                 <td>
+                    <button type="submit">Select</button>
+                 </td>
+            </tr>
+            
+            <?php
+        endforeach; ?>
+        </tbody>
+        </table>
+      
+    </div>
+    <?php endforeach; ?>
+    
+  </div>
+
+</div>
+
+<script>
+    var isEnable = <?php echo json_encode($Enable);?>;
+
+</script>

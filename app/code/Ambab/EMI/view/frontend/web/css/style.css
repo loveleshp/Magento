@@ -1,0 +1,26 @@
+
+.collapsibleContainer{
+  border: 1px solid #ddd;
+  border-radius: 2px;
+}
+
+.collapsibleTab{
+  background: #eee;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(10, 10, 10);
+  
+ 
+}
+.collapsibleTab:first-child {
+    border-bottom: 1px solid #ddd;
+  }
+  .collapsibleTab:nth-last-child(2) {
+    border-top: 1px solid #ddd;
+  }
+.collapsibleContent {
+  padding: 1rem 2rem;
+}
+

@@ -1,0 +1,18 @@
+<div class="none" data-bind="visible: isEnable">
+    
+    <!-- ko if: (isEnable == 1) -->
+        <a class="action popup-open" data-bind="mageInit: {'Ambab_EMI/js/checkout/popup':{}}" href="#"> 
+            <span><!-- ko i18n: 'EMI Options'--><!-- /ko --></span>     
+        </a> 
+    <!--/ko-->
+</div>
+
+<script type="text/javascript">
+    var viewModel = {
+        isEnable: ko.observable(true)
+    };
+</script>
+
+
+
+    
