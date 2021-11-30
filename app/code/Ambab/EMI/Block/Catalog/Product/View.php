@@ -4,6 +4,9 @@ namespace Ambab\EMI\Block\Catalog\Product;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Block\Product\AbstractProduct;
 use Ambab\EMI\Model\AllemiFactory;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\CatalogInventory\Api\StockRegistryInterface;
+use Magento\InventorySalesAdminUi\Model\GetSalableQuantityDataBySku;
 
 class View extends AbstractProduct
 {
@@ -13,6 +16,9 @@ class View extends AbstractProduct
     protected $registry;
     protected $ordertotal;
     protected $json;
+    protected $minimum;
+    protected $left;
+    protected $salable;
     
 
     public function __construct(Context $context, 
@@ -21,7 +27,10 @@ class View extends AbstractProduct
     \Magento\Framework\Registry $registry,
     AllemiFactory $allemiFactory,
     \Magento\Checkout\Model\Cart $ordertotal,
-    \Magento\Framework\Serialize\Serializer\Json $json
+    \Magento\Framework\Serialize\Serializer\Json $json,
+    ScopeConfigInterface $minimum,
+    StockRegistryInterface $left,
+    GetSalableQuantityDataBySku $salable
     )
     {   
         $this->helper = $helperData;
@@ -29,6 +38,9 @@ class View extends AbstractProduct
         $this->registry = $registry;
         $this->ordertotal = $ordertotal;
         $this->json = $json;
+        $this->minimum = $minimum;
+        $this ->left = $left;
+        $this->salable = $salable;
         parent::__construct($context, $data);
     }
 
@@ -46,7 +58,7 @@ class View extends AbstractProduct
 
     public function getCurrentProduct()
     {
-        return $this->registry->registry('current_product');
+        return $this->registry->registry('current_product')->getId();
     }
 
     // public function getPriceById($id)
@@ -125,20 +137,38 @@ class View extends AbstractProduct
         return $this->ordertotal->getQuote()->getGrandTotal();
     }
 
-    public function getJsonCollection()
-    {
-        $Data=[];
-        foreach($this->getBank() as $b)
-        {
-          $Data['getBk'][]= $b['bank_name'];
-          $Bankn = $b['bank_name'];
+    // public function getJsonCollection()
+    // {
+    //     $Data=[];
+    //     foreach($this->getBank() as $b)
+    //     {
+    //       $Data['getBk'][]= $b['bank_name'];
+    //       $Bankn = $b['bank_name'];
         
-        foreach($this->getEMI_Detail($Bankn) as $bn ){
-            $Data['Interest'][$bn['bank_name']]['interest_rate'][] = $bn['interest_rate'];
-            $Data['Plan'][$bn['bank_name']]['emi_plan'][] = $bn['emi_plan'];
-        }
+    //     foreach($this->getEMI_Detail($Bankn) as $bn ){
+    //         $Data['Interest'][$bn['bank_name']]['interest_rate'][] = $bn['interest_rate'];
+    //         $Data['Plan'][$bn['bank_name']]['emi_plan'][] = $bn['emi_plan'];
+    //     }
+    // }
+    //     echo json_encode($Data); exit;
+    // }
+
+    public function getMinimumAmountOrder()
+    {
+        return $this->minimum->getValue('sales/minimum_order/amount');
     }
-        echo json_encode($Data); exit;
+
+    public function getLeftStock($productId)
+    {
+      $stock =  $this->left->getStockItem($productId);
+      return $stock->getQty();
+    }
+ 
+    public function getSalableQty($sku)
+    {
+        $qty = $this->salable->execute($sku);
+        return $qty[0]['qty'];
     }
 }
+
 ?>

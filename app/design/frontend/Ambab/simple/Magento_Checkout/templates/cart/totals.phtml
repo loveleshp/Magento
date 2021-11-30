@@ -1,0 +1,34 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/**
+ * Shopping cart totals template
+ * @var $block \Magento\Checkout\Block\Cart\Totals
+ */
+?>
+<div id="cart-totals" class="cart-totals" data-bind="scope:'block-totals'">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+<?php
+    $blockObj= $block->getLayout()->createBlock('Ambab\EMI\Block\Catalog\Product\View');
+    $Price = $blockObj->getOrdertotal();
+    $Total = $blockObj->getMinimumAmountOrder();
+    $Mininum = $Total - $Price;
+    ?>
+
+    <?php 
+     if ($Price < $Total) :?>
+        <p style="color:red;"><?= "To proceed kindly add item worth US$". $Mininum ." in your cart" ;?><br/></p>
+            <?php endif;
+    ?>
+    <script type="text/x-magento-init">
+            {
+                "#cart-totals": {
+                    "Magento_Ui/js/core/app": <?= /* @noEscape */ $block->getJsLayout() ?>
+                }
+            }
+    </script>
+</div>

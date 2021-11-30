@@ -1,0 +1,70 @@
+<?php 
+// $qtyBlock= $block->getLayout()->createBlock('Ambab\EMI\Block\Catalog\Product\View');
+
+
+
+// $productId = $_product->getId();
+// $_qty = $qtyBlock->getRemainingQty($productId);
+
+$blockObj= $block->getLayout()->createBlock('Ambab\EMI\Block\Catalog\Product\View');
+$_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+$_product = $block->getProduct();
+$qty = $_product->getSku();
+// $productId = $_product->getId();
+if($_product->getTypeId() == 'simple'){
+$StockState = $blockObj->getSalableQty($qty);
+}
+// $Quantity = $blockObj->getLeftStock($_product->getId());
+// $stock = $Quantity->getQty();
+
+
+
+if(!$_product instanceof \Magento\Catalog\Model\Product) {
+    return;
+}
+
+$_call = $block->getAtCall();
+$_code = $block->getAtCode();
+$_className = $block->getCssClass();
+$_attributeLabel = $block->getAtLabel();
+$_attributeType = $block->getAtType();
+$_attributeAddAttribute = $block->getAddAttribute();
+
+$renderLabel = true;
+// if defined as 'none' in layout, do not render
+if ($_attributeLabel == 'none') {
+    $renderLabel = false;
+}
+
+if ($_attributeLabel && $_attributeLabel == 'default') {
+    $_attributeLabel = $_product->getResource()->getAttribute($_code)->getStoreLabel();
+}
+if ($_attributeType && $_attributeType == 'text') {
+    $_attributeValue = ($_helper->productAttribute($_product, $_product->$_call(), $_code))
+        ? $_product->getAttributeText($_code)
+        : '';
+} else {
+    $_attributeValue = $_helper->productAttribute($_product, $_product->$_call(), $_code);
+}
+?>
+
+<?php if ($_attributeValue) :?>
+<div class="product attribute <?= $block->escapeHtmlAttr($_className) ?>">
+    <?php if ($renderLabel) :?>
+        <strong class="type"><?= $block->escapeHtml($_attributeLabel) ?></strong>
+    <?php endif; ?>
+    <div class="value" <?=  $_attributeAddAttribute ?>><?=  $_attributeValue ?></div>
+    
+    <?php if($_product->gethot_icon()): ?>
+        <strong><br> <span class="hot"> 🔥 Product</span></strong>
+    <?php endif; ?>
+
+    <strong>
+        <?php if(isset($StockState)):?>
+        <span style="font-size: 20px; color: green;"><?= $StockState ?></span>
+        <span> Units left</span>
+        <?php endif;?>
+    </strong><br>
+
+    </div>
+<?php endif; ?>
