@@ -1,0 +1,169 @@
+<!-- <?php 
+
+// $Price = $block->getProductPrize();
+// echo $Price;
+
+// // $data = $block->getCollection();
+// // foreach($data as $record)
+// // {
+// //     echo "<pre>";
+// //     print_r($record->getEMI_PLAN());
+// //     echo "</pre>";
+// // }
+// // exit;
+
+
+// $interest_rate=[];
+// $emi_plan=[];
+// foreach($data as $record)
+// {
+// echo "<pre>";
+// array_push($interest_rate, $record->getInterest_Rate());
+// // print_r($record->getInterest_Rate());
+// array_push($emi_plan, $record->getEMI_Plan());
+// // print_r($record->getEMI_Plan());
+// echo "</pre>";
+// }
+// print_r($interest_rate);
+// print_r($emi_plan);
+
+?> -->
+<!-- 
+<?php
+    // $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    // $model=$objectManager->create('Ambab\EMI\Model\Allemi');
+    // $datacollection=$model->getCollection()
+
+    // For Checkout Popup objectMangaer
+
+    // $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    // $cart = $objectManager->get('\Magento\Checkout\Model\Cart'); 
+    // $Price= $cart->getQuote()->getBaseSubtotal();
+?>
+         <div id="element" class="collapsibleContainer" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": false, "multipleCollapsible": true}}'>
+                <div class="collapsibleTab" data-role="collapsible">
+                    <div data-role="trigger">
+                
+        
+                    </div>
+                </div>
+                <div class="collapsibleContent" data-role="content">
+                        <table id="emi">
+                            <thead>
+                                <tr>
+                                    <th>EMI_ID</th>
+                                    <th>Bank_Name</th>
+                                    <th>EMI_Plan</th>
+                                    <th>Interest_Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                       
+                            
+                        <?php foreach ($datacollection as $record): ?>
+                            
+                            <tr>
+                                <td><?php echo $record['EMI_Id']; ?></td>
+                                <td><?php echo $record['Bank_Name']; ?></td>
+                                <td><?php echo $record['EMI_Plan']; ?></td>
+                                <td><?php echo $record['Interest_Rate']; ?></td>
+                            </tr>
+                            
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>		
+
+        
+
+        <script>
+
+     require([
+    'jquery',
+    'accordion'], function ($) {
+    $("#element").accordion();
+});
+            </script> -->
+--------
+
+<!-- foreach($bname as $bank){
+    echo $bank['bank_name'] . "<br>";
+}
+echo" <table>";
+echo"  <tr>";
+echo"<th>EMI_ID</th>";
+echo"  <th>Bank_Name</th>";
+echo"    <th>EMI_Plan</th>";
+echo"    <th>Interest_Rate</th>";
+echo"    <th>Final_Amount</th>";
+echo"  </tr>"; -->
+<!-- 
+$data = $block->getCollection();
+foreach($data ->getData() as $emi){
+foreach($block ->getEMI_Plan($record['emi_id']) as $emi)
+  { 
+    $emi = $block->getEMI($Price, $emi['interest_rate'], $emi['emi_plan']);
+     print_r($emi) . "<br>"; 
+     $total=$emi+$Price;
+     echo" <tr>";
+     echo" <td>".$record['emi_id']."</td>";
+     echo"<td>".$record['bank_name']."</td>";
+     echo" <td>".$record['emi_plan']."</td>";
+     echo" <td>".$record['interest_rate']."</td>";
+     echo" <td>".round($total,2)."</td>";
+     echo"</tr>";
+ }
+
+  } -->
+
+
+
+
+   
+
+      
+
+        <!-- echo" </table>"; -->
+
+        <?php
+// foreach($data as $record)
+// {
+//     echo "<pre>";
+//     print_r($record->getEMI_PLAN());
+//     echo "</pre>";
+// }
+// exit;
+
+
+// $interest_rate=[];
+// $emi_plan=[];
+// $emi=[];
+// foreach($data as $record)
+// {
+// echo "<pre>";
+// array_push($interest_rate, $record->getInterest_Rate());
+// // print_r($record->getInterest_Rate());
+// array_push($emi_plan, $record->getEMI_Plan());
+// // print_r($record->getEMI_Plan());
+// echo "</pre>";
+// }
+// print_r($interest_rate);
+// print_r($emi_plan);
+
+
+// function EMI_Plan($Price, $interest_rate, $emi_plan)
+// {
+//     $emi;
+//     // one month interest
+//     $interest_rate = $interest_rate / (12 * 100);
+//     // one month period
+//     $emi_plan = $emi_plan * 12;
+//     $emi = ($Price * $interest_rate * pow(1 + $interest_rate, $emi_plan)) /
+//                   (pow(1 + $interest_rate, $emi_plan) - 1);
+//     return ($emi);
+
+
+// $emi = EMI_Plan($Price, $interest_rate, $emi_plan);
+// echo "Monthly EMI is = ", $emi;
+
+?>

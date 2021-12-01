@@ -1,0 +1,110 @@
+<div id="popup-modal">
+    
+    
+ <?php
+
+$Price = $block->getProductPrize();
+// echo $Price;
+$bname = $block->getBank()
+    ->getData();
+$data = $block->getCollection();
+$min=[];
+
+// $ajax = $block->getJsonCollection();
+
+// print_r($bname);
+
+
+?>
+
+<div id="element" class="collapsibleContainer" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": false, "multipleCollapsible": true}}'>
+
+ <?php //foreach ($data->getData() as $record): ?>
+
+    <?php foreach ($bname as $emi): ?>
+    <div class="collapsibleTab" data-role="collapsible">
+        <div data-role="trigger">
+                <span><?php echo $emi['bank_name']; ?></span>     
+        </div>
+        
+    </div>
+    <div class="collapsibleContent" data-role="content">
+        <table id="emi">
+        <thead>
+            <tr>
+                <th>Plans</th>
+                <th>Interest(PA)</th> 
+                <th>Final_Amount</th>
+            </tr>
+        </thead>
+    <tbody>
+        <?php foreach ($block->getEMI_Detail($emi['bank_name'])->getData() as $emi): ?>
+
+            <?php $emiprice = $block->getEMI($Price, $emi['interest_rate'], $emi['emi_plan']); ?>
+            <?php $total = $emiprice *$emi['emi_plan']; ?>
+            <?php $plan = round($total/$emi['emi_plan'],2);?>
+            <?php $interest = $total - $Price ;?>
+           <?php array_push($min, $plan); ?>
+            <tr>
+                 <td><?php 
+                 echo $plan ."$ x ". $emi['emi_plan'] ."m" ?> </td>
+                 <td><?php 
+                 echo round($interest,2) ."$"." (".$emi['interest_rate']."%".")"?></td> 
+                 <td><?php 
+                 echo round($total, 2) ."$" ?></td>
+            </tr>
+            
+            <?php
+        endforeach; ?>
+        </tbody>
+        </table>
+      
+    </div>
+    <?php endforeach; ?>
+    
+  </div> 
+  
+</div>
+<div id="emi"><a href="#">EMI Starts From <?php echo ceil(min($min)) ."$" ?> </a></div>
+<script>
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal'
+        ],
+        function($,modal) 
+        {
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                title: 'EMI STATUS',
+                buttons: [{
+                    text: $.mage.__('Close'),
+                    class: '',
+                    click: function () {
+                        this.closeModal();
+                    }
+                }]
+            };
+
+            // var popup = modal(options, $('#popup-modal'));
+
+            // $('#popup-modal').modal('openModal');
+
+            var popup = modal(options, $('#popup-modal'));
+            $("#emi").on('click',function()
+            {
+                $("#popup-modal").modal("openModal");
+            });
+        }
+    );
+
+    require([
+    'jquery',
+    'accordion'], function ($) {
+    $("#element").accordion();
+});
+
+</script>
+

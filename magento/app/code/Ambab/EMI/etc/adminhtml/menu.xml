@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+
+        <add id="Ambab_EMI::emi" title="EMI Calculator" module="Ambab_EMI" sortOrder="51" resource="Ambab_EMI::emi"/>
+
+        <add id="Ambab_EMI::post" title="Add EMI" module="Ambab_EMI" sortOrder="10" action="emi/allemi" resource="Ambab_EMI::post" parent="Ambab_EMI::emi"/>
+
+        <add id="Ambab_EMI::allemi" title="Configuration" module="Ambab_EMI" sortOrder="20" parent="Ambab_EMI::emi" action="adminhtml/system_config/edit/section/helloworld" resource="Ambab_EMI::allemi"/>
+        
+        <add id="Ambab_EMI::setting" title="Setting" module="Ambab_EMI" sortOrder="50" action="Ambab_EMI/setting" resource="Ambab_EMI::setting" parent="Ambab_EMI::emi"/>
+
+        <add id="Ambab_EMI::EMI_config" title="Configuration" module="Ambab_EMI" sortOrder="20" parent="Ambab_EMI::setting" action="adminhtml/system_config/edit/section/Ambab_EMI" resource="Ambab_EMI::EMI_config"/>
+    </menu>
+</config>
+
